@@ -14,7 +14,9 @@ module.exports = {
     // Disable các rule mà eslint xung đột với prettier.
     // Để cái này ở dưới để nó override các rule phía trên!.
     'eslint-config-prettier',
-    'prettier'
+    'prettier',
+    'react-app',
+    'react-app/jest'
   ],
   plugins: ['prettier'],
   settings: {
@@ -35,6 +37,7 @@ module.exports = {
   },
   rules: {
     // Tắt rule yêu cầu import React trong file jsx
+    'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     // Cảnh báo khi thẻ <a target='_blank'> mà không có rel="noreferrer"
     'react/jsx-no-target-blank': 'warn',
