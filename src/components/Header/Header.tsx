@@ -1,35 +1,26 @@
 import { Link } from 'react-router-dom'
-import { useState, useRef } from 'react'
-import { useFloating, FloatingPortal, arrow, shift, offset } from '@floating-ui/react'
-import { motion, AnimatePresence } from 'framer-motion'
+import Popover from '../Popover'
 
 export default function Header() {
-  const [open, setOpen] = useState(false)
-  const arrowRef = useRef(null)
-  const { x, y, refs, strategy, middlewareData } = useFloating({
-    middleware: [
-      offset(6),
-      shift(),
-      arrow({
-        element: arrowRef
-      })
-    ]
-  })
-  const showPopover = () => {
-    setOpen(true)
-  }
-  const hidePopover = () => {
-    setOpen(false)
-  }
   return (
     <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-white text-sm'>
       <div className='container'>
         <div className='flex justify-end'>
-          <div
+          <Popover
+            as='span'
             className='flex items-center py-1 hover:text-gray-300 cursor-pointer'
-            ref={refs.setReference}
-            onMouseEnter={showPopover}
-            onMouseLeave={hidePopover}
+            renderPopover={
+              <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
+                <div className='flex flex-col py-2 pr-20 pl-2'>
+                  <button className='py-1 px-3 hover:text-orange text-sm text-left'>
+                    Tiếng Việt
+                  </button>
+                  <button className='py-1 px-3 hover:text-orange mt-2 text-sm text-left'>
+                    English
+                  </button>
+                </div>
+              </div>
+            }
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -54,46 +45,35 @@ export default function Header() {
               stroke='currentColor'
               className='w-4 h-4'
             >
-              <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M19.5 8.25l-7.5 7.5-7.5-7.5'
+              />
             </svg>
-            <FloatingPortal>
-              <AnimatePresence>
-                {open && (
-                  <motion.div
-                    ref={refs.setFloating}
-                    style={{
-                      position: strategy,
-                      top: y ?? 0,
-                      left: x ?? 0,
-                      width: 'max-content',
-                      transformOrigin: `${middlewareData.arrow?.x}px top`
-                    }}
-                    initial={{ opacity: 0, transform: 'scale(0)' }}
-                    animate={{ opacity: 1, transform: 'scale(1)' }}
-                    exit={{ opacity: 0, transform: 'scale(0)' }}
-                    transition={{ duration: 0.1 }}
-                  >
-                    <span
-                      ref={arrowRef}
-                      className='border-x-transparent border-t-transparent border-b-white border-[11px] absolute translate-y-[-95%] z-10'
-                      style={{
-                        left: middlewareData.arrow?.x,
-                        top: middlewareData.arrow?.y
-                      }}
-                    />
-                    <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
-                      <div className='flex flex-col py-2 px-3'>
-                        <button className='py-2 px-3 hover:text-orange'>Tiếng Việt</button>
-                        <button className='py-2 px-3 hover:text-orange mt-2'>English</button>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </FloatingPortal>
-          </div>
-
-          <div className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'>
+          </Popover>
+          <Popover
+            className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'
+            renderPopover={
+              <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
+                <Link
+                  to='/'
+                  className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left text-sm'
+                >
+                  Tài khoản của tôi
+                </Link>
+                <Link
+                  to='/'
+                  className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left text-sm'
+                >
+                  Đơn mua
+                </Link>
+                <button className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left text-sm'>
+                  Đăng xuất
+                </button>
+              </div>
+            }
+          >
             <div className='w-6 h-6 mr-2 flex-shrink-0'>
               <img
                 src='https://plus.unsplash.com/premium_photo-1666323594456-cd1b09b2cbf4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dGhlJTIwYmVzdHxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80'
@@ -102,7 +82,7 @@ export default function Header() {
               />
             </div>
             <div>khalitoan</div>
-          </div>
+          </Popover>
         </div>
         <div className='grid grid-cols-12 gap-4 mt-4 items-end'>
           <Link to='/' className='col-span-2'>
@@ -138,23 +118,135 @@ export default function Header() {
               </button>
             </div>
           </form>
-          <div className='col-span-1'>
-            <Link to='/'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='w-8 h-8'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
-                />
-              </svg>
-            </Link>
+          <div className='col-span-1 justify-self-end'>
+            <Popover
+              renderPopover={
+                <div className='bg-white relative shadow-md rounded-sm border border-gray-200 max-w-[400px] text-sm'>
+                  <div className='p-2'>
+                    <div className='text-gray-400 capitalize'>
+                      Sản phẩm mới thêm
+                    </div>
+                    <div className='mt-5'>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img
+                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lkgzyrupqil8fc'
+                            alt='ảnh'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='flex-grow ml-2 overflow-hidden'>
+                          <div className='truncate'>
+                            Nước tẩy trang và làm sạch sâu 3-in-1 LOreal Paris
+                            Micellar Water 400ml
+                          </div>
+                        </div>
+                        <div className='ml-2 flex-shrink-0'>
+                          <span className='text-orange'>₫169.000</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img
+                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lkgzyrupqil8fc'
+                            alt='ảnh'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='flex-grow ml-2 overflow-hidden'>
+                          <div className='truncate'>
+                            Nước tẩy trang và làm sạch sâu 3-in-1 LOreal Paris
+                            Micellar Water 400ml
+                          </div>
+                        </div>
+                        <div className='ml-2 flex-shrink-0'>
+                          <span className='text-orange'>₫169.000</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img
+                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lkgzyrupqil8fc'
+                            alt='ảnh'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='flex-grow ml-2 overflow-hidden'>
+                          <div className='truncate'>
+                            Nước tẩy trang và làm sạch sâu 3-in-1 LOreal Paris
+                            Micellar Water 400ml
+                          </div>
+                        </div>
+                        <div className='ml-2 flex-shrink-0'>
+                          <span className='text-orange'>₫169.000</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img
+                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lkgzyrupqil8fc'
+                            alt='ảnh'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='flex-grow ml-2 overflow-hidden'>
+                          <div className='truncate'>
+                            Nước tẩy trang và làm sạch sâu 3-in-1 LOreal Paris
+                            Micellar Water 400ml
+                          </div>
+                        </div>
+                        <div className='ml-2 flex-shrink-0'>
+                          <span className='text-orange'>₫169.000</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img
+                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lkgzyrupqil8fc'
+                            alt='ảnh'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='flex-grow ml-2 overflow-hidden'>
+                          <div className='truncate'>
+                            Nước tẩy trang và làm sạch sâu 3-in-1 LOreal Paris
+                            Micellar Water 400ml
+                          </div>
+                        </div>
+                        <div className='ml-2 flex-shrink-0'>
+                          <span className='text-orange'>₫169.000</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='flex mt-6 items-center justify-between'>
+                      <div className='capitalize text-xs text-gray-500'>
+                        Thêm vào giỏ hàng
+                      </div>
+                      <button className='capitalize bg-orange hover:bg-opacity-80 px-4 py-2 rounded-sm text-white'>
+                        Xem giỏ hàng
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            >
+              <Link to='/'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='w-8 h-8'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
+                  />
+                </svg>
+              </Link>
+            </Popover>
           </div>
         </div>
       </div>
