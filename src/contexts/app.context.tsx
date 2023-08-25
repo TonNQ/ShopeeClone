@@ -1,10 +1,8 @@
-import { profile } from 'console'
 import { createContext, useState } from 'react'
 import { User } from 'src/types/user.type'
 import {
   getAccessTokenFromLocalStorage,
-  getProfileFromLocalStorage,
-  setProfileToLocalStorage
+  getProfileFromLocalStorage
 } from 'src/utils/auth'
 
 interface AppContextInterface {
