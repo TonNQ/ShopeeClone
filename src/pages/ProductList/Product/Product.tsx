@@ -1,29 +1,33 @@
 import { Link } from 'react-router-dom'
+import { Product as ProductType } from 'src/types/product.type'
 
-export default function Product() {
+interface Props {
+  product: ProductType
+}
+
+export default function Product({ product }: Props) {
   return (
     <Link to='/'>
       <div className='bg-white shadow rounded-sm hover:translate-y-[-0.04rem] hover:shadow-md duration-100 transition-transform overflow-hidden'>
         <div className='w-full relative pt-[100%]'>
           <img
-            src='https://plus.unsplash.com/premium_photo-1692809752577-72da691a28ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80'
-            alt=''
+            src={product.image}
+            alt={product.name}
             className='absolute top-0 left-0 bg-white w-full h-full object-cover'
           />
         </div>
         <div className='p-2 overflow-hidden'>
           <div className='min-h-[2rem] line-clamp-2 text-xs'>
-            Áo Thun Cotton Unisex - Áo tay lỡ Basic định lượng 250gsm co giãn cổ
-            bo chun - Tshirt 10
+            {product.name}
           </div>
           <div className='flex items-center mt-3'>
             <div className='line-through max-w-[50%] text-gray-500 truncate'>
               <span className='text-xs'>₫</span>
-              <span className='text-sm'>5.000</span>
+              <span className='text-sm'>{product.price_before_discount}</span>
             </div>
             <div className='text-orange truncate ml-1'>
               <span className='text-xs'>₫</span>
-              <span className='text-base font-medium'>5.000</span>
+              <span className='text-base font-medium'>{product.price}</span>
             </div>
           </div>
           <div className='mt-3 flex items-center justify-end'>
@@ -66,7 +70,7 @@ export default function Product() {
             </div>
             <div className='ml-2 text-xs'>
               <span className='ml-1'>Đã bán </span>
-              <span>5.66k</span>
+              <span>{product.sold}</span>
             </div>
           </div>
         </div>
