@@ -1,14 +1,17 @@
 import classNames from 'classnames'
+import { Link, createSearchParams } from 'react-router-dom'
+import path from 'src/constants/path'
+import { QueryConfig } from 'src/pages/ProductList/ProductList'
 
 interface Props {
-  page: number
-  setPage: React.Dispatch<React.SetStateAction<number>>
+  queryConfig: QueryConfig
   pageSize: number
 }
 
 const RANGE = 2
 
-export default function Pagination({ page, setPage, pageSize }: Props) {
+export default function Pagination({ queryConfig, pageSize }: Props) {
+  const page = Number(queryConfig.page)
   const renderPagination = () => {
     let dotBefore = false
     let dotAfter = false
@@ -16,12 +19,12 @@ export default function Pagination({ page, setPage, pageSize }: Props) {
       if (!dotBefore) {
         dotBefore = true
         return (
-          <button
+          <span
             key={index}
-            className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border'
+            className='mx-2 rounded border bg-white px-3 py-2 shadow-sm'
           >
             ...
-          </button>
+          </span>
         )
       }
       return null
@@ -30,12 +33,12 @@ export default function Pagination({ page, setPage, pageSize }: Props) {
       if (!dotAfter) {
         dotAfter = true
         return (
-          <button
+          <span
             key={index}
-            className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-default border'
+            className='mx-2 rounded border bg-white px-3 py-2 shadow-sm'
           >
             ...
-          </button>
+          </span>
         )
       }
       return null
@@ -67,31 +70,119 @@ export default function Pagination({ page, setPage, pageSize }: Props) {
           return renderDotBefore(index)
         }
         return (
-          <button
+          <Link
+            to={{
+              pathname: path.home,
+              search: createSearchParams({
+                ...queryConfig,
+                page: pageNumber.toString()
+              }).toString()
+            }}
             key={index}
             className={classNames(
-              'bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border',
+              'mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm',
               {
-                'border-cyan-500': pageNumber === page,
+                'border-cyan-500 bg-blue-50': pageNumber === page,
                 'border-transparent': pageNumber !== page
               }
             )}
-            onClick={() => setPage(pageNumber)}
           >
             {pageNumber}
-          </button>
+          </Link>
         )
       })
   }
   return (
-    <div className='flex flex-wrap mt-6 justify-center'>
-      <button className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer'>
-        Prev
-      </button>
+    <div className='mt-6 flex flex-wrap justify-center'>
+      {page === 1 ? (
+        <span className='mx-2 flex cursor-not-allowed items-center justify-center rounded bg-white/40 px-3 py-2 shadow-sm'>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='h-4 w-4'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M15.75 19.5L8.25 12l7.5-7.5'
+            />
+          </svg>
+        </span>
+      ) : (
+        <Link
+          to={{
+            pathname: path.home,
+            search: createSearchParams({
+              ...queryConfig,
+              page: (page - 1).toString()
+            }).toString()
+          }}
+          className='mx-2 flex cursor-pointer items-center justify-center rounded bg-white px-3 py-2 shadow-sm'
+        >
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='h-4 w-4'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M15.75 19.5L8.25 12l7.5-7.5'
+            />
+          </svg>
+        </Link>
+      )}
       {renderPagination()}
-      <button className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer'>
-        Next
-      </button>
+      {page === pageSize ? (
+        <span className='mx-2 flex cursor-not-allowed items-center justify-center rounded bg-white/40 px-3 py-2 shadow-sm'>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='h-4 w-4'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M8.25 4.5l7.5 7.5-7.5 7.5'
+            />
+          </svg>
+        </span>
+      ) : (
+        <Link
+          to={{
+            pathname: path.home,
+            search: createSearchParams({
+              ...queryConfig,
+              page: (page + 1).toString()
+            }).toString()
+          }}
+          className='mx-2 flex cursor-pointer items-center justify-center rounded bg-white px-3 py-2 shadow-sm'
+        >
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='h-4 w-4'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M8.25 4.5l7.5 7.5-7.5 7.5'
+            />
+          </svg>
+        </Link>
+      )}
     </div>
   )
 }
