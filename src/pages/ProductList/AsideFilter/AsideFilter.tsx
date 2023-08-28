@@ -11,6 +11,7 @@ import { schema, Schema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { NoUndefinedField } from 'src/types/utils.type'
 import { ObjectSchema } from 'yup'
+import RatingStar from '../RatingStar'
 
 interface Props {
   queryConfig: QueryConfig
@@ -48,6 +49,21 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       }).toString()
     })
   })
+
+  const handleRemoveAll = () => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(
+        omit(queryConfig, [
+          'price_max',
+          'price_min',
+          'rating_filter',
+          'category'
+        ])
+      ).toString()
+    })
+  }
+
   return (
     <div className='py-4'>
       <Link
@@ -209,122 +225,12 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       </div>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='text-sm'>Đánh giá</div>
-      <ul className='my-3'>
-        <li className='py-1 pl-2'>
-          <Link to='' className='mb-2 flex items-center text-sm'>
-            {Array(5)
-              .fill(0)
-              .map((_, index) => (
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth={1.5}
-                  stroke='#ffce3d'
-                  className='mr-1 h-5 w-5 fill-yellow'
-                  key={index}
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z'
-                  />
-                </svg>
-              ))}
-            <span className='ml-1'>trở lên</span>
-          </Link>
-          <Link to='' className='mb-2 flex items-center text-sm'>
-            {Array(5)
-              .fill(0)
-              .map((_, index) => (
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth={1.5}
-                  stroke='#ffce3d'
-                  className='mr-1 h-5 w-5 fill-yellow'
-                  key={index}
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z'
-                  />
-                </svg>
-              ))}
-            <span className='ml-1'>trở lên</span>
-          </Link>
-          <Link to='' className='mb-2 flex items-center text-sm'>
-            {Array(5)
-              .fill(0)
-              .map((_, index) => (
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth={1.5}
-                  stroke='#ffce3d'
-                  className='mr-1 h-5 w-5 fill-yellow'
-                  key={index}
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z'
-                  />
-                </svg>
-              ))}
-            <span className='ml-1'>trở lên</span>
-          </Link>
-          <Link to='' className='mb-2 flex items-center text-sm'>
-            {Array(5)
-              .fill(0)
-              .map((_, index) => (
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth={1.5}
-                  stroke='#ffce3d'
-                  className='mr-1 h-5 w-5 fill-yellow'
-                  key={index}
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z'
-                  />
-                </svg>
-              ))}
-            <span className='ml-1'>trở lên</span>
-          </Link>
-          <Link to='' className='mb-2 flex items-center text-sm'>
-            {Array(5)
-              .fill(0)
-              .map((_, index) => (
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth={1.5}
-                  stroke='#ffce3d'
-                  className='mr-1 h-5 w-5 fill-yellow'
-                  key={index}
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z'
-                  />
-                </svg>
-              ))}
-            <span className='ml-1'>trở lên</span>
-          </Link>
-        </li>
-      </ul>
+      <RatingStar queryConfig={queryConfig} />
       <div className='my-4 h-[1px] bg-gray-300' />
-      <Button className='flex w-full items-center justify-center bg-orange p-1 text-sm uppercase text-white hover:bg-orange/70'>
+      <Button
+        className='flex w-full items-center justify-center bg-orange p-1 text-sm uppercase text-white hover:bg-orange/70'
+        onClick={handleRemoveAll}
+      >
         XOÁ TẤT CẢ
       </Button>
     </div>
