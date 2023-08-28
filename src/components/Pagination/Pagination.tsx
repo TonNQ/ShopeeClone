@@ -21,7 +21,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
         return (
           <span
             key={index}
-            className='mx-2 rounded border bg-white px-3 py-2 shadow-sm'
+            className='mx-2 my-1 rounded border bg-white px-3 py-2 shadow-sm'
           >
             ...
           </span>
@@ -35,7 +35,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
         return (
           <span
             key={index}
-            className='mx-2 rounded border bg-white px-3 py-2 shadow-sm'
+            className='mx-2 my-1 rounded border bg-white px-3 py-2 shadow-sm'
           >
             ...
           </span>
@@ -80,7 +80,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
             }}
             key={index}
             className={classNames(
-              'mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm',
+              'mx-2 my-1 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm',
               {
                 'border-cyan-500 bg-blue-50': pageNumber === page,
                 'border-transparent': pageNumber !== page
@@ -95,7 +95,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
   return (
     <div className='mt-6 flex flex-wrap justify-center'>
       {page === 1 ? (
-        <span className='mx-2 flex cursor-not-allowed items-center justify-center rounded bg-white/40 px-3 py-2 shadow-sm'>
+        <span className='mx-2 my-1 flex cursor-not-allowed items-center justify-center rounded bg-white/40 px-3 py-2 shadow-sm'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
@@ -120,7 +120,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
               page: (page - 1).toString()
             }).toString()
           }}
-          className='mx-2 flex cursor-pointer items-center justify-center rounded bg-white px-3 py-2 shadow-sm'
+          className='mx-2 my-1 flex cursor-pointer items-center justify-center rounded bg-white px-3 py-2 shadow-sm'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -140,7 +140,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
       )}
       {renderPagination()}
       {page === pageSize ? (
-        <span className='mx-2 flex cursor-not-allowed items-center justify-center rounded bg-white/40 px-3 py-2 shadow-sm'>
+        <span className='mx-2 my-1 flex cursor-not-allowed items-center justify-center rounded bg-white/40 px-3 py-2 shadow-sm'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
@@ -165,7 +165,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
               page: (page + 1).toString()
             }).toString()
           }}
-          className='mx-2 flex cursor-pointer items-center justify-center rounded bg-white px-3 py-2 shadow-sm'
+          className='mx-2 my-1 flex cursor-pointer items-center justify-center rounded bg-white px-3 py-2 shadow-sm'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
