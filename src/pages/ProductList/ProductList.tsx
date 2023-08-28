@@ -5,7 +5,6 @@ import SortProductList from './SortProductList'
 import productApi from 'src/apis/product.api'
 import useQueryParams from 'src/hooks/useQueryParams'
 import Pagination from 'src/components/Pagination'
-import { useState } from 'react'
 import { ProductListConfig } from 'src/types/product.type'
 import { isUndefined, omitBy } from 'lodash'
 
@@ -30,7 +29,6 @@ export default function ProductList() {
     },
     isUndefined
   )
-  const [page, setPage] = useState(1)
   const { data } = useQuery({
     queryKey: ['products', queryParams],
     queryFn: () => productApi.getProducts(queryConfig as ProductListConfig),
