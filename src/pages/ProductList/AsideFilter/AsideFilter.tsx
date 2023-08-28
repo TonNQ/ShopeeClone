@@ -1,19 +1,43 @@
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import path from 'src/constants/path'
+import { QueryConfig } from '../ProductList'
+import { Category } from 'src/types/category.type'
+import classNames from 'classnames'
+import { omit } from 'lodash'
 
-export default function AsideFilter() {
+interface Props {
+  queryConfig: QueryConfig
+  categories: Category[]
+}
+
+export default function AsideFilter({ queryConfig, categories }: Props) {
+  const { category } = queryConfig
   return (
     <div className='py-4'>
-      <Link to={path.home} className='flex items-center font-bold'>
+      <Link
+        to={{
+          pathname: path.home,
+          search: createSearchParams(
+            omit(
+              {
+                ...queryConfig,
+                page: '1'
+              },
+              ['category']
+            )
+          ).toString()
+        }}
+        className='flex items-center font-bold'
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
           viewBox='0 0 24 24'
           strokeWidth={1.5}
           stroke='currentColor'
-          className='w-5 h-5 mr-3 fill-current flex-shrink-0'
+          className='mr-3 h-5 w-5 flex-shrink-0 fill-current'
         >
           <path
             strokeLinecap='round'
@@ -23,46 +47,42 @@ export default function AsideFilter() {
         </svg>
         Tất cả danh mục
       </Link>
-      <div className='bg-gray-300 h-[1px] my-4' />
+      <div className='my-4 h-[1px] bg-gray-300' />
       <ul>
-        <li className='py-2 pl-2'>
-          <Link
-            to={path.home}
-            className='relative px-2 text-orange font-semibold flex'
-          >
-            <svg
-              viewBox='0 0 4 7'
-              className='w-2 h-2 fill-orange absolute top-1 left-[-10px]'
-            >
-              <polygon points='4 3.5 0 0 0 7'></polygon>
-            </svg>
-            Thời trang nam
-          </Link>
-        </li>
-        <li className='py-2 pl-2'>
-          <Link to={path.home} className='relative px-2 flex'>
-            Áo khoác
-          </Link>
-        </li>
-        <li className='py-2 pl-2'>
-          <Link to={path.home} className='relative px-2 flex'>
-            Áo Vest
-          </Link>
-        </li>
-        <li className='py-2 pl-2'>
-          <Link to={path.home} className='relative px-2 flex'>
-            Quần Tây
-          </Link>
-        </li>
-        <li className='py-2 pl-2'>
-          <Link to={path.home} className='relative px-2 flex'>
-            Áo Hoodie, Áo len & Áo Nỉ
-          </Link>
-        </li>
+        {categories.map((categoryItem) => {
+          const isActive = category === categoryItem._id
+          return (
+            <li className='py-2 pl-2'>
+              <Link
+                to={{
+                  pathname: path.home,
+                  search: createSearchParams({
+                    ...queryConfig,
+                    category: categoryItem._id,
+                    page: '1'
+                  }).toString()
+                }}
+                className={classNames('relative flex px-2 ', {
+                  'font-semibold text-orange': isActive
+                })}
+              >
+                {isActive && (
+                  <svg
+                    viewBox='0 0 4 7'
+                    className='absolute left-[-10px] top-1 h-2 w-2 fill-orange'
+                  >
+                    <polygon points='4 3.5 0 0 0 7'></polygon>
+                  </svg>
+                )}
+                {categoryItem.name}
+              </Link>
+            </li>
+          )
+        })}
       </ul>
       <Link
         to={path.home}
-        className='flex items-center font-bold mt-4 uppercase'
+        className='mt-4 flex items-center font-bold uppercase'
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -70,7 +90,7 @@ export default function AsideFilter() {
           viewBox='0 0 24 24'
           strokeWidth={1.5}
           stroke='currentColor'
-          className='w-4 h-4 mr-2'
+          className='mr-2 h-4 w-4'
         >
           <path
             strokeLinecap='round'
@@ -80,7 +100,7 @@ export default function AsideFilter() {
         </svg>
         Bộ lọc tìm kiếm
       </Link>
-      <div className='bg-gray-300 h-[1px] my-4' />
+      <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
         <div>Khoảng giá</div>
         <form className='mt-2'>
@@ -116,16 +136,16 @@ export default function AsideFilter() {
               classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm text-sm'
             />
           </div>
-          <Button className='w-full p-1 uppercase bg-orange text-white text-sm hover:bg-orange/70 flex justify-center items-center'>
+          <Button className='flex w-full items-center justify-center bg-orange p-1 text-sm uppercase text-white hover:bg-orange/70'>
             Áp dụng
           </Button>
         </form>
       </div>
-      <div className='bg-gray-300 h-[1px] my-4' />
+      <div className='my-4 h-[1px] bg-gray-300' />
       <div className='text-sm'>Đánh giá</div>
       <ul className='my-3'>
         <li className='py-1 pl-2'>
-          <Link to='' className='flex items-center mb-2 text-sm'>
+          <Link to='' className='mb-2 flex items-center text-sm'>
             {Array(5)
               .fill(0)
               .map((_, index) => (
@@ -135,7 +155,7 @@ export default function AsideFilter() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='#ffce3d'
-                  className='w-5 h-5 mr-1 fill-yellow'
+                  className='mr-1 h-5 w-5 fill-yellow'
                   key={index}
                 >
                   <path
@@ -147,7 +167,7 @@ export default function AsideFilter() {
               ))}
             <span className='ml-1'>trở lên</span>
           </Link>
-          <Link to='' className='flex items-center mb-2 text-sm'>
+          <Link to='' className='mb-2 flex items-center text-sm'>
             {Array(5)
               .fill(0)
               .map((_, index) => (
@@ -157,7 +177,7 @@ export default function AsideFilter() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='#ffce3d'
-                  className='w-5 h-5 mr-1 fill-yellow'
+                  className='mr-1 h-5 w-5 fill-yellow'
                   key={index}
                 >
                   <path
@@ -169,7 +189,7 @@ export default function AsideFilter() {
               ))}
             <span className='ml-1'>trở lên</span>
           </Link>
-          <Link to='' className='flex items-center mb-2 text-sm'>
+          <Link to='' className='mb-2 flex items-center text-sm'>
             {Array(5)
               .fill(0)
               .map((_, index) => (
@@ -179,7 +199,7 @@ export default function AsideFilter() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='#ffce3d'
-                  className='w-5 h-5 mr-1 fill-yellow'
+                  className='mr-1 h-5 w-5 fill-yellow'
                   key={index}
                 >
                   <path
@@ -191,7 +211,7 @@ export default function AsideFilter() {
               ))}
             <span className='ml-1'>trở lên</span>
           </Link>
-          <Link to='' className='flex items-center mb-2 text-sm'>
+          <Link to='' className='mb-2 flex items-center text-sm'>
             {Array(5)
               .fill(0)
               .map((_, index) => (
@@ -201,7 +221,7 @@ export default function AsideFilter() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='#ffce3d'
-                  className='w-5 h-5 mr-1 fill-yellow'
+                  className='mr-1 h-5 w-5 fill-yellow'
                   key={index}
                 >
                   <path
@@ -213,7 +233,7 @@ export default function AsideFilter() {
               ))}
             <span className='ml-1'>trở lên</span>
           </Link>
-          <Link to='' className='flex items-center mb-2 text-sm'>
+          <Link to='' className='mb-2 flex items-center text-sm'>
             {Array(5)
               .fill(0)
               .map((_, index) => (
@@ -223,7 +243,7 @@ export default function AsideFilter() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='#ffce3d'
-                  className='w-5 h-5 mr-1 fill-yellow'
+                  className='mr-1 h-5 w-5 fill-yellow'
                   key={index}
                 >
                   <path
@@ -237,8 +257,8 @@ export default function AsideFilter() {
           </Link>
         </li>
       </ul>
-      <div className='bg-gray-300 h-[1px] my-4' />
-      <Button className='w-full p-1 uppercase bg-orange text-white text-sm hover:bg-orange/70 flex justify-center items-center'>
+      <div className='my-4 h-[1px] bg-gray-300' />
+      <Button className='flex w-full items-center justify-center bg-orange p-1 text-sm uppercase text-white hover:bg-orange/70'>
         XOÁ TẤT CẢ
       </Button>
     </div>
