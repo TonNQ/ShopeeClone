@@ -1,4 +1,12 @@
-export default function ProductRating({ rating }: { rating: number }) {
+export default function ProductRating({
+  rating,
+  activeClassName = 'w-3 h-3 fill-yellow',
+  nonActiveClassName = 'h-3 w-3 fill-current text-gray-300'
+}: {
+  rating: number
+  activeClassName?: string
+  nonActiveClassName?: string
+}) {
   const handleWidth = (order: number) => {
     if (order <= rating) {
       return '100%'
@@ -15,7 +23,7 @@ export default function ProductRating({ rating }: { rating: number }) {
         .map((_, index) => (
           <div className='relative' key={index}>
             <div
-              className='absolute top-0 left-0 h-full overflow-hidden'
+              className='absolute left-0 top-0 h-full overflow-hidden'
               style={{ width: handleWidth(index + 1) }}
             >
               <svg
@@ -23,8 +31,7 @@ export default function ProductRating({ rating }: { rating: number }) {
                 fill='none'
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
-                stroke='#ffce3d'
-                className='w-3 h-3  fill-yellow'
+                className={activeClassName}
               >
                 <path
                   strokeLinecap='round'
@@ -38,8 +45,7 @@ export default function ProductRating({ rating }: { rating: number }) {
               fill='none'
               viewBox='0 0 24 24'
               strokeWidth={1.5}
-              stroke='rgb(209 213 219)'
-              className='w-3 h-3 fill-current text-gray-300'
+              className={nonActiveClassName}
             >
               <path
                 strokeLinecap='round'
