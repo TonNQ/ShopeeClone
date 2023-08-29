@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import AsideFilter from './AsideFilter'
-import Product from './Product/Product'
-import SortProductList from './SortProductList'
+import AsideFilter from './components/AsideFilter'
+import Product from './components/Product/Product'
+import SortProductList from './components/SortProductList'
 import productApi from 'src/apis/product.api'
 import useQueryParams from 'src/hooks/useQueryParams'
 import Pagination from 'src/components/Pagination'
@@ -46,7 +46,10 @@ export default function ProductList() {
         {productsData && (
           <div className='grid grid-cols-12 gap-6'>
             <div className='col-span-3'>
-              <AsideFilter categories={categoriesData?.data.data || []} queryConfig={queryConfig} />
+              <AsideFilter
+                categories={categoriesData?.data.data || []}
+                queryConfig={queryConfig}
+              />
             </div>
             <div className='col-span-9'>
               <SortProductList
