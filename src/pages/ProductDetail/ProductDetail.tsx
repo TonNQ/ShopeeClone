@@ -20,9 +20,9 @@ export default function ProductDetail() {
   console.log(product)
   if (!product) return null
   return (
-    <div className='bg-gray-200 px-6 py-6'>
-      <div className='rounded-sm bg-white p-4 shadow'>
-        <div className='container'>
+    <div className='bg-gray-200 p-4 px-6'>
+      <div className='container'>
+        <div className='rounded-sm bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>
             <div className='col-span-5'>
               <div className='relative w-full pt-[100%] shadow'>
@@ -208,14 +208,16 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <div className='mt-8 rounded-sm bg-white p-4 shadow'>
-        <div className='container'>
+      <div className='container'>
+        <div className='mt-8 rounded-sm bg-white p-4 shadow'>
           <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>
             Mô tả sản phẩm
           </div>
           <div className='mx-4 mb-4 mt-12 text-sm leading-loose'>
             <div
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(product.description)
+              }}
             ></div>
           </div>
         </div>
