@@ -1,12 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useContext, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import userApi from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
 import { UserSchema, userSchema } from 'src/utils/rules'
+import DateSelect from '../../components/DateSelect'
+import { toast } from 'react-toastify'
+import { AppContext } from 'src/contexts/app.context'
+import { setProfileToLocalStorage } from 'src/utils/auth'
 
 type FormData = Pick<
   UserSchema,
@@ -22,11 +26,13 @@ const profileSchema = userSchema.pick([
 ])
 
 export default function Profile() {
+  const { setProfile } = useContext(AppContext)
   const {
     register,
     control,
     formState: { errors },
-    setValue
+    setValue,
+    handleSubmit
   } = useForm<FormData>({
     defaultValues: {
       name: '',
@@ -37,11 +43,13 @@ export default function Profile() {
     },
     resolver: yupResolver<FormData>(profileSchema)
   })
-  const { data: profileData } = useQuery({
+  const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: userApi.getProfile
   })
   const profile = profileData?.data.data
+  const updateProfileMutation = useMutation(userApi.updateProfile)
+
   useEffect(() => {
     if (profile) {
       setValue('name', profile.name)
@@ -57,6 +65,17 @@ export default function Profile() {
     }
   }, [profile, setValue])
 
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await updateProfileMutation.mutateAsync({
+      ...data,
+      date_of_birth: data.date_of_birth?.toISOString()
+    })
+    setProfile(res.data.data)
+    setProfileToLocalStorage(res.data.data)
+    refetch()
+    toast.success(res.data.message)
+  })
+
   return (
     <div className='rounded-sm bg-white px-4 pb-10 shadow md:px-7 md:pb-20'>
       <div className='border-b border-b-gray-200 py-6'>
@@ -67,7 +86,10 @@ export default function Profile() {
           Quản lý thông tin hồ sơ để bảo mật tài khoản
         </div>
       </div>
-      <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start'>
+      <form
+        className='mt-8 flex flex-col-reverse md:flex-row md:items-start'
+        onSubmit={onSubmit}
+      >
         <div className='mt-6 flex-grow md:mt-0 md:pr-12'>
           <div className='flex flex-col flex-wrap sm:flex-row'>
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>
@@ -127,29 +149,22 @@ export default function Profile() {
               />
             </div>
           </div>
-          <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-            <div className='mb-2 truncate pt-3 capitalize sm:mb-0 sm:w-[20%] sm:text-right'>
-              Ngày sinh
-            </div>
-            <div className='sm:w-[80%] sm:pl-5'>
-              <div className='flex justify-between'>
-                <select className='h-10 w-[32%] rounded-sm border border-black/10 px-3'>
-                  <option disabled>Ngày</option>
-                </select>
-                <select className='h-10 w-[32%] rounded-sm border border-black/10 px-3'>
-                  <option disabled>Tháng</option>
-                </select>
-                <select className='h-10 w-[32%] rounded-sm border border-black/10 px-3'>
-                  <option disabled>Năm</option>
-                </select>
-              </div>
-            </div>
-          </div>
+          <Controller
+            control={control}
+            name='date_of_birth'
+            render={({ field }) => (
+              <DateSelect
+                errorMessage={errors.date_of_birth?.message}
+                onChange={field.onChange}
+                value={field.value}
+              />
+            )}
+          />
           <div className='mt-7 flex flex-col flex-wrap sm:flex-row'>
             <div className='mb-2 truncate pt-3 capitalize sm:mb-0 sm:w-[20%] sm:text-right'></div>
             <div className='sm:w-[80%] sm:pl-5'>
               <Button
-                className='flex h-9 items-center bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
+                className='flex h-9 items-center rounded-sm bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
                 type='submit'
               >
                 Lưu
