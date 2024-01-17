@@ -13,6 +13,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { setProfileToLocalStorage } from 'src/utils/auth'
 import { getAvatarUrl, isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
+import config from 'src/constants/config'
 
 type FormData = Pick<
   UserSchema,
@@ -122,7 +123,17 @@ export default function Profile() {
 
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileFromLocal = event.target.files?.[0]
-    setFile(fileFromLocal)
+    if (
+      fileFromLocal &&
+      fileFromLocal.size < config.maxSizeUploadAvatar &&
+      fileFromLocal.type.includes('image')
+    ) {
+      setFile(fileFromLocal)
+    } else {
+      toast.error('Dung lượng file tối đa 1 MB. Định dạng: .JPEG, .PNG', {
+        autoClose: 3000
+      })
+    }
   }
 
   return (
@@ -236,6 +247,11 @@ export default function Profile() {
               className='hidden'
               ref={fileInputRef}
               onChange={onFileChange}
+              onClick={() => {
+                if (fileInputRef.current) {
+                  fileInputRef.current.value = ''
+                }
+              }}
             />
             <button
               className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm capitalize text-gray-600 shadow-sm'
