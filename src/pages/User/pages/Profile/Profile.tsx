@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import userApi from 'src/apis/user.api'
 import Button from 'src/components/Button'
@@ -13,7 +13,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { setProfileToLocalStorage } from 'src/utils/auth'
 import { getAvatarUrl, isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
-import config from 'src/constants/config'
+import InputFile from 'src/components/InputFile'
 
 type FormData = Pick<
   UserSchema,
@@ -33,7 +33,6 @@ const profileSchema = userSchema.pick([
 ])
 
 export default function Profile() {
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const { setProfile } = useContext(AppContext)
   const [file, setFile] = useState<File>()
 
@@ -117,23 +116,8 @@ export default function Profile() {
     }
   })
 
-  const handleUpload = () => {
-    fileInputRef.current?.click()
-  }
-
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileFromLocal = event.target.files?.[0]
-    if (
-      fileFromLocal &&
-      fileFromLocal.size < config.maxSizeUploadAvatar &&
-      fileFromLocal.type.includes('image')
-    ) {
-      setFile(fileFromLocal)
-    } else {
-      toast.error('Dung lượng file tối đa 1 MB. Định dạng: .JPEG, .PNG', {
-        autoClose: 3000
-      })
-    }
+  const handleChangeFile = (file: File) => {
+    setFile(file)
   }
 
   return (
@@ -241,25 +225,7 @@ export default function Profile() {
                 className='h-full w-full rounded-full object-cover'
               />
             </div>
-            <input
-              type='file'
-              accept='.jpg,.jpeg,.png'
-              className='hidden'
-              ref={fileInputRef}
-              onChange={onFileChange}
-              onClick={() => {
-                if (fileInputRef.current) {
-                  fileInputRef.current.value = ''
-                }
-              }}
-            />
-            <button
-              className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm capitalize text-gray-600 shadow-sm'
-              type='button'
-              onClick={handleUpload}
-            >
-              Chọn ảnh
-            </button>
+            <InputFile onChange={handleChangeFile} />
             <div className='mt-3 text-gray-400'>
               <div>Dung lượng file tối đa: 1 MB</div>
               <div>Định dạng: .JPG, .JPEG, .PNG</div>
