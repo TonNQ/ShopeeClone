@@ -24,8 +24,7 @@ import path from 'src/constants/path'
 export default function ProductDetail() {
   const queryClient = useQueryClient()
   const [buyCount, setBuyCount] = useState(1)
-  const { nameId, productId } = useParams()
-  const a = productId.value
+  const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
