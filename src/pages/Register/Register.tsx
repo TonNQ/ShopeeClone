@@ -6,7 +6,7 @@ import { schema, Schema } from 'src/utils/rules'
 import Input from 'src/components/Input'
 import authApi from 'src/apis/auth.api'
 import omit from 'lodash/omit'
-import { isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
@@ -41,7 +41,7 @@ export default function Register() {
       },
       onError: (error) => {
         if (
-          isAxiosUnprocessableEntity<
+          isAxiosUnprocessableEntityError<
             ErrorResponse<Omit<FormData, 'confirm_password'>>
           >(error)
         ) {

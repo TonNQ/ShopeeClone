@@ -11,7 +11,7 @@ import DateSelect from '../../components/DateSelect'
 import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.context'
 import { setProfileToLocalStorage } from 'src/utils/auth'
-import { getAvatarUrl, isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import InputFile from 'src/components/InputFile'
 
@@ -102,7 +102,9 @@ export default function Profile() {
       refetch()
       toast.success(res.data.message)
     } catch (error) {
-      if (isAxiosUnprocessableEntity<ErrorResponse<FormDataError>>(error)) {
+      if (
+        isAxiosUnprocessableEntityError<ErrorResponse<FormDataError>>(error)
+      ) {
         const formError = error.response?.data.data
         if (formError) {
           Object.keys(formError).forEach((key) => {

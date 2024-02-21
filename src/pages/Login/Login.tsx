@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Schema, schema } from 'src/utils/rules'
 import Input from 'src/components/Input'
 import { useMutation } from '@tanstack/react-query'
-import { isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import authApi from 'src/apis/auth.api'
 import { useContext } from 'react'
@@ -38,7 +38,7 @@ export default function Login() {
         navigate('/')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntity<ErrorResponse<FormData>>(error)) {
+        if (isAxiosUnprocessableEntityError<ErrorResponse<FormData>>(error)) {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
