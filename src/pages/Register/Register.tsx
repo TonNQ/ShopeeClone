@@ -97,6 +97,7 @@ export default function Register() {
                 register={register}
                 type='password'
                 className='mt-2'
+                classNameEye='absolute right-[5px] top-[12px] h-5 w-5 cursor-pointer'
                 errorMessage={errors.password?.message}
                 placeholder='Password'
                 autoComplete='on'
@@ -106,6 +107,7 @@ export default function Register() {
                 register={register}
                 type='password'
                 className='mt-2'
+                classNameEye='absolute right-[5px] top-[12px] h-5 w-5 cursor-pointer'
                 errorMessage={errors.confirm_password?.message}
                 placeholder='Confirm password'
                 autoComplete='on'
