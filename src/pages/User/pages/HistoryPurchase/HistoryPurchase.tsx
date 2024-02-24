@@ -7,6 +7,7 @@ import { purchasesStatus } from 'src/constants/purchase'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { PurchaseListStatus } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
+import { Helmet } from 'react-helmet-async'
 
 const purchaseTabs = [
   {
@@ -68,6 +69,10 @@ export default function HistoryPurchase() {
 
   return (
     <div>
+      <Helmet>
+        <title>Đơn mua | Shopee</title>
+        <meta name='description' content='Đơn mua' />
+      </Helmet>
       <div className='overflow-x-auto'>
         <div className='min-w-[700px]'>
           <div className='sticky top-0 flex rounded-t-sm shadow-sm'>

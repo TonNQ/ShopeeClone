@@ -14,6 +14,7 @@ import { setProfileToLocalStorage } from 'src/utils/auth'
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import InputFile from 'src/components/InputFile'
+import { Helmet } from 'react-helmet-async'
 
 type FormData = Pick<
   UserSchema,
@@ -124,6 +125,10 @@ export default function Profile() {
 
   return (
     <div className='rounded-sm bg-white px-4 pb-10 shadow md:px-7 md:pb-20'>
+      <Helmet>
+        <title>Tài khoản | Shopee</title>
+        <meta name='description' content='Tài khoản' />
+      </Helmet>
       <div className='border-b border-b-gray-200 py-6'>
         <h1 className='text-lg font-medium capitalize text-gray-900'>
           Hồ sơ của tôi
