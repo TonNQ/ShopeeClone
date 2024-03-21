@@ -19,7 +19,7 @@ import {
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils'
 import { ErrorResponse } from 'src/types/utils.type'
 
-class Http {
+export class Http {
   instance: AxiosInstance
   private accessToken: string
   private refreshToken: string
@@ -40,6 +40,7 @@ class Http {
     })
     this.instance.interceptors.request.use(
       (config) => {
+        console.log('request', config)
         if (this.accessToken) {
           config.headers.Authorization = this.accessToken
         }
@@ -123,10 +124,13 @@ class Http {
         clearLocalStorage()
         this.accessToken = ''
         this.refreshToken = ''
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const data = error.response?.data as any | undefined
         toast.error(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          data.data.message || data.message
+          (data && data.data && data.data.message) ||
+            (data && data.message) ||
+            'Unknown error'
         )
 
         return Promise.reject(error)
