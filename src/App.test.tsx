@@ -43,6 +43,5 @@ describe('App', () => {
       expect(document.documentElement.textContent).toContain('Page Not Found')
     })
 
-    // await logScreen()
   })
 })
